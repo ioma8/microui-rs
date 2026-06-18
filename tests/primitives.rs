@@ -63,6 +63,6 @@ fn context_init_sets_default_versioned_state() {
     assert_eq!(ctx.frame, 0);
     assert_eq!(ctx.hover, 0);
     assert_eq!(ctx.focus, 0);
-    assert_eq!(ctx.style.as_ref().unwrap().title_height, 24);
+    assert_eq!(ctx.style.title_height, 24);
     assert_eq!(MU_VERSION, "2.02");
 }
