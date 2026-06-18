@@ -2,12 +2,11 @@ mod common;
 
 use common::fixture;
 use microui::{
-    color, rect, vec2, Color, Rect, Vec2, MU_CLIP_ALL, MU_CLIP_PART, MU_COLOR_MAX,
+    color, rect, vec2, Color, Context, Rect, Vec2, MU_CLIP_ALL, MU_CLIP_PART, MU_COLOR_MAX,
     MU_COMMAND_CLIP, MU_COMMAND_ICON, MU_COMMAND_JUMP, MU_COMMAND_MAX, MU_COMMAND_RECT,
     MU_COMMAND_TEXT, MU_CONTAINERPOOL_SIZE, MU_IDSTACK_SIZE, MU_KEY_BACKSPACE,
     MU_KEY_RETURN, MU_KEY_SHIFT, MU_MAX_FMT, MU_MAX_WIDTHS, MU_MOUSE_LEFT, MU_OPT_AUTOSIZE,
-    MU_OPT_POPUP, MU_REAL_FMT, MU_ROOTLIST_SIZE, MU_SLIDER_FMT, MU_TREENODEPOOL_SIZE,
-    MU_VERSION,
+    MU_OPT_POPUP, MU_REAL_FMT, MU_ROOTLIST_SIZE, MU_SLIDER_FMT, MU_TREENODEPOOL_SIZE, MU_VERSION,
 };
 
 #[test]
@@ -56,4 +55,14 @@ fn exported_constants_match_c_header() {
     assert_eq!(MU_MAX_FMT, 127);
     assert_eq!(MU_REAL_FMT, "%.3g");
     assert_eq!(MU_SLIDER_FMT, "%.2f");
+}
+
+#[test]
+fn context_init_sets_default_versioned_state() {
+    let ctx = Context::new();
+    assert_eq!(ctx.frame, 0);
+    assert_eq!(ctx.hover, 0);
+    assert_eq!(ctx.focus, 0);
+    assert_eq!(ctx.style.as_ref().unwrap().title_height, 24);
+    assert_eq!(MU_VERSION, "2.02");
 }
