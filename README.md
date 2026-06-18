@@ -59,9 +59,13 @@ while let Some(cmd) = mu_next_command(&ctx, &mut cursor) {
 }
 ```
 
+## Screenshot
+
+![microui-rs example](doc/screenshot.png)
+
 ## Running the example
 
-The `examples/basic` subcrate shows a working interactive window using [winit](https://github.com/rust-windowing/winit) + [pixels](https://github.com/parasyte/pixels) with a software renderer and 8x8 bitmap font.
+The `examples/basic` subcrate shows a working interactive window using [winit](https://github.com/rust-windowing/winit) + [softbuffer](https://github.com/rust-windowing/softbuffer) with a software renderer and 8x8 bitmap font.
 
 ```sh
 cargo run -p microui-basic
