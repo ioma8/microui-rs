@@ -61,7 +61,7 @@ while let Some(cmd) = mu_next_command(&ctx, &mut cursor) {
 
 ## Screenshot
 
-![microui-rs example](doc/screenshot.png)
+<img src="doc/screenshot.png" width="400" alt="microui-rs example">
 
 ## Running the example
 
