@@ -4,6 +4,14 @@ A Rust port of [microui](https://github.com/rxi/microui) v2.02 by rxi — a tiny
 
 The public API is a 1:1 match to the original C API, including the `mu_` prefix on every function and constant.
 
+## Why This Fork
+
+If you want the closest Rust equivalent of upstream `microui`, this fork is the stronger choice:
+
+- Compared to [NeoCogi/microui-rs](https://github.com/NeoCogi/microui-rs), this crate stays closer to the original C surface: same `mu_*` names, same constants, same immediate-mode flow, no library dependencies, and parity tests against the bundled upstream sources.
+- Compared to [NeoCogi/microui-redux](https://github.com/NeoCogi/microui-redux), this crate remains a small immediate-mode port instead of growing into a larger retained-mode UI toolkit with a different authoring model.
+- In short: this fork is superior if your goal is exact upstream behavior, a minimal dependency footprint, and a direct C-to-Rust port rather than a Rust-first redesign.
+
 ## Features
 
 - Fixed-size memory: no heap allocation inside the library
