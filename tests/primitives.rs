@@ -2,7 +2,7 @@ mod common;
 
 use common::fixture;
 use microui::{
-    color, rect, vec2, Color, Context, Rect, Vec2, MU_CLIP_ALL, MU_CLIP_PART, MU_COLOR_MAX,
+    mu_color, mu_rect, mu_vec2, Color, Context, Rect, Vec2, MU_CLIP_ALL, MU_CLIP_PART, MU_COLOR_MAX,
     MU_COMMAND_CLIP, MU_COMMAND_ICON, MU_COMMAND_JUMP, MU_COMMAND_MAX, MU_COMMAND_RECT,
     MU_COMMAND_TEXT, MU_CONTAINERPOOL_SIZE, MU_IDSTACK_SIZE, MU_KEY_BACKSPACE,
     MU_KEY_RETURN, MU_KEY_SHIFT, MU_MAX_FMT, MU_MAX_WIDTHS, MU_MOUSE_LEFT, MU_OPT_AUTOSIZE,
@@ -12,9 +12,9 @@ use microui::{
 #[test]
 fn constructors_and_version_exist() {
     assert_eq!(MU_VERSION, "2.02");
-    assert_eq!(vec2(1, 2), Vec2 { x: 1, y: 2 });
-    assert_eq!(rect(3, 4, 5, 6), Rect { x: 3, y: 4, w: 5, h: 6 });
-    assert_eq!(color(7, 8, 9, 10), Color { r: 7, g: 8, b: 9, a: 10 });
+    assert_eq!(mu_vec2(1, 2), Vec2 { x: 1, y: 2 });
+    assert_eq!(mu_rect(3, 4, 5, 6), Rect { x: 3, y: 4, w: 5, h: 6 });
+    assert_eq!(mu_color(7, 8, 9, 10), Color { r: 7, g: 8, b: 9, a: 10 });
 }
 
 #[test]
@@ -23,9 +23,9 @@ fn primitive_fixture_matches_c_oracle() {
     let actual = format!(
         "version={}\nvec2={:?}\nrect={:?}\ncolor={:?}\n",
         MU_VERSION,
-        vec2(1, 2),
-        rect(3, 4, 5, 6),
-        color(7, 8, 9, 10),
+        mu_vec2(1, 2),
+        mu_rect(3, 4, 5, 6),
+        mu_color(7, 8, 9, 10),
     );
     assert_eq!(actual, fixture_text);
 }

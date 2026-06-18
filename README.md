@@ -1,59 +1,90 @@
-# ![microui](https://user-images.githubusercontent.com/3920290/75171571-be83c500-5723-11ea-8a50-504cc2ae1109.png)
-A *tiny*, portable, immediate-mode UI library written in ANSI C
+# microui-rs
+
+A Rust port of [microui](https://github.com/rxi/microui) v2.02 by rxi — a tiny, immediate-mode UI library that works with any renderer that can draw rectangles and text.
+
+The public API is a 1:1 match to the original C API, including the `mu_` prefix on every function and constant.
 
 ## Features
-* Tiny: around `1100 sloc` of ANSI C
-* Works within a fixed-sized memory region: no additional memory is allocated
-* Built-in controls: window, scrollable panel, button, slider, textbox, label,
-  checkbox, wordwrapped text
-* Works with any rendering system that can draw rectangles and text
-* Designed to allow the user to easily add custom controls
-* Simple layout system
 
-## Example
-![example](https://user-images.githubusercontent.com/3920290/75187058-2b598800-5741-11ea-9358-38caf59f8791.png)
-```c
-if (mu_begin_window(ctx, "My Window", mu_rect(10, 10, 140, 86))) {
-  mu_layout_row(ctx, 2, (int[]) { 60, -1 }, 0);
+- Fixed-size memory: no heap allocation inside the library
+- Built-in controls: window, panel, button, slider, textbox, label, checkbox, word-wrapped text
+- Renderer-agnostic: you handle drawing commands, the library produces them
+- C API parity: same function names, same argument types, same constants as the original
 
-  mu_label(ctx, "First:");
-  if (mu_button(ctx, "Button1")) {
-    printf("Button1 pressed\n");
-  }
+## Usage
 
-  mu_label(ctx, "Second:");
-  if (mu_button(ctx, "Button2")) {
-    mu_open_popup(ctx, "My Popup");
-  }
+```rust
+use microui::*;
 
-  if (mu_begin_popup(ctx, "My Popup")) {
-    mu_label(ctx, "Hello world!");
-    mu_end_popup(ctx);
-  }
+let mut ctx = Context::new();
+ctx.text_width  = Some(|_font, text, len| { /* measure text */ 0 });
+ctx.text_height = Some(|_font| 12);
 
-  mu_end_window(ctx);
+// each frame:
+mu_begin(&mut ctx);
+
+if mu_begin_window(&mut ctx, "My Window", mu_rect(10, 10, 140, 86)) != 0 {
+    mu_layout_row(&mut ctx, 2, Some(&[60, -1]), 0);
+
+    mu_label(&mut ctx, "First:");
+    if mu_button(&mut ctx, "Button1") != 0 {
+        println!("Button1 pressed");
+    }
+
+    mu_label(&mut ctx, "Second:");
+    if mu_button(&mut ctx, "Button2") != 0 {
+        mu_open_popup(&mut ctx, "My Popup");
+    }
+
+    if mu_begin_popup(&mut ctx, "My Popup") != 0 {
+        mu_label(&mut ctx, "Hello world!");
+        mu_end_popup(&mut ctx);
+    }
+
+    mu_end_window(&mut ctx);
+}
+
+mu_end(&mut ctx);
+
+// consume draw commands:
+let mut cursor = None;
+while let Some(cmd) = mu_next_command(&ctx, &mut cursor) {
+    match cmd {
+        Command::Rect(c)  => { /* draw filled rect */ }
+        Command::Text(c)  => { /* draw text */ }
+        Command::Icon(c)  => { /* draw icon */ }
+        Command::Clip(c)  => { /* set clip rect */ }
+        Command::Jump(_)  => {}
+    }
 }
 ```
 
-## Screenshot
-![screenshot](https://user-images.githubusercontent.com/3920290/75188642-63ae9580-5744-11ea-9eee-d753ff5c0aa7.png)
+## Running the example
 
-[**Browser Demo**](https://floooh.github.io/sokol-html5/sgl-microui-sapp.html)
+The `examples/basic` subcrate shows a working interactive window using [winit](https://github.com/rust-windowing/winit) + [pixels](https://github.com/parasyte/pixels) with a software renderer and 8x8 bitmap font.
 
-## Usage
-* See [`doc/usage.md`](doc/usage.md) for usage instructions
-* See the [`demo`](demo) directory for a usage example
+```sh
+cargo run -p microui-basic
+```
+
+## Tests
+
+```sh
+# library tests
+cargo test -p microui
+
+# pixel snapshot test (no window required — compares raw RGBA output to a golden file)
+cargo test -p microui-basic
+
+# regenerate the golden file after an intentional visual change
+BLESS=1 cargo test -p microui-basic
+```
 
 ## Notes
-The library expects the user to provide input and handle the resultant drawing
-commands, it does not do any drawing itself.
 
-## Contributing
-The library is designed to be lightweight, providing a foundation to which you
-can easily add custom controls and UI elements; pull requests adding additional
-features will likely not be merged. Bug reports are welcome.
+- The library does not draw anything itself. Feed it input, read back commands, render them.
+- The original C source and header are kept in `src/` for reference.
 
 ## License
-This library is free software; you can redistribute it and/or modify it under
-the terms of the MIT license. See [LICENSE](LICENSE) for details.
 
+MIT — see [LICENSE](LICENSE).

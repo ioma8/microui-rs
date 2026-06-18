@@ -1,4 +1,4 @@
-use microui::{begin, begin_window, end, end_window, label, layout_row, next_command, rect, Command, Context};
+use microui::{mu_begin, mu_begin_window, mu_end, mu_end_window, mu_label, mu_layout_row, mu_next_command, mu_rect, Command, Context};
 
 fn text_width(_font: microui::Font, text: &str, len: i32) -> i32 {
     if len < 0 {
@@ -18,17 +18,17 @@ fn simple_window_command_stream_matches_fixture() {
     ctx.text_width = Some(text_width);
     ctx.text_height = Some(text_height);
 
-    begin(&mut ctx);
-    if begin_window(&mut ctx, "Test", rect(0, 0, 100, 100)) != 0 {
-        layout_row(&mut ctx, 1, Some(&[-1]), 0);
-        label(&mut ctx, "Hello");
-        end_window(&mut ctx);
+    mu_begin(&mut ctx);
+    if mu_begin_window(&mut ctx, "Test", mu_rect(0, 0, 100, 100)) != 0 {
+        mu_layout_row(&mut ctx, 1, Some(&[-1]), 0);
+        mu_label(&mut ctx, "Hello");
+        mu_end_window(&mut ctx);
     }
-    end(&mut ctx);
+    mu_end(&mut ctx);
 
     let mut cursor = None;
     let mut actual = String::new();
-    while let Some(cmd) = next_command(&ctx, &mut cursor) {
+    while let Some(cmd) = mu_next_command(&ctx, &mut cursor) {
         match cmd {
             Command::Clip(c) => {
                 actual.push_str(&format!("clip {} {} {} {}\n", c.rect.x, c.rect.y, c.rect.w, c.rect.h));

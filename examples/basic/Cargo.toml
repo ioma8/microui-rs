@@ -1,0 +1,21 @@
+[package]
+name = "microui-basic"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+name = "basic"
+path = "src/lib.rs"
+
+[[bin]]
+name = "basic"
+path = "src/main.rs"
+
+[dependencies]
+microui  = { path = "../.." }
+font8x8  = "0.3"
+softbuffer = "0.4"
+winit    = "0.30"
+
+[dev-dependencies]
+microui  = { path = "../.." }

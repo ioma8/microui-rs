@@ -1,3 +1,7 @@
+[workspace]
+members = [".", "examples/basic"]
+resolver = "2"
+
 [package]
 name = "microui"
 version = "0.1.0"
