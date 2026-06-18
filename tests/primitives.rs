@@ -1,7 +1,14 @@
 mod common;
 
 use common::fixture;
-use microui::{color, rect, vec2, Color, Rect, Vec2, MU_VERSION};
+use microui::{
+    color, rect, vec2, Color, Rect, Vec2, MU_CLIP_ALL, MU_CLIP_PART, MU_COLOR_MAX,
+    MU_COMMAND_CLIP, MU_COMMAND_ICON, MU_COMMAND_JUMP, MU_COMMAND_MAX, MU_COMMAND_RECT,
+    MU_COMMAND_TEXT, MU_CONTAINERPOOL_SIZE, MU_IDSTACK_SIZE, MU_KEY_BACKSPACE,
+    MU_KEY_RETURN, MU_KEY_SHIFT, MU_MAX_FMT, MU_MAX_WIDTHS, MU_MOUSE_LEFT, MU_OPT_AUTOSIZE,
+    MU_OPT_POPUP, MU_REAL_FMT, MU_ROOTLIST_SIZE, MU_SLIDER_FMT, MU_TREENODEPOOL_SIZE,
+    MU_VERSION,
+};
 
 #[test]
 fn constructors_and_version_exist() {
@@ -22,4 +29,31 @@ fn primitive_fixture_matches_c_oracle() {
         color(7, 8, 9, 10),
     );
     assert_eq!(actual, fixture_text);
+}
+
+#[test]
+fn exported_constants_match_c_header() {
+    assert_eq!(MU_CLIP_PART, 1);
+    assert_eq!(MU_CLIP_ALL, 2);
+    assert_eq!(MU_COMMAND_JUMP, 1);
+    assert_eq!(MU_COMMAND_CLIP, 2);
+    assert_eq!(MU_COMMAND_RECT, 3);
+    assert_eq!(MU_COMMAND_TEXT, 4);
+    assert_eq!(MU_COMMAND_ICON, 5);
+    assert_eq!(MU_COMMAND_MAX, 6);
+    assert_eq!(MU_COLOR_MAX, 14);
+    assert_eq!(MU_MOUSE_LEFT, 1);
+    assert_eq!(MU_KEY_SHIFT, 1);
+    assert_eq!(MU_KEY_BACKSPACE, 8);
+    assert_eq!(MU_KEY_RETURN, 16);
+    assert_eq!(MU_OPT_AUTOSIZE, 1 << 9);
+    assert_eq!(MU_OPT_POPUP, 1 << 10);
+    assert_eq!(MU_ROOTLIST_SIZE, 32);
+    assert_eq!(MU_IDSTACK_SIZE, 32);
+    assert_eq!(MU_CONTAINERPOOL_SIZE, 48);
+    assert_eq!(MU_TREENODEPOOL_SIZE, 48);
+    assert_eq!(MU_MAX_WIDTHS, 16);
+    assert_eq!(MU_MAX_FMT, 127);
+    assert_eq!(MU_REAL_FMT, "%.3g");
+    assert_eq!(MU_SLIDER_FMT, "%.2f");
 }
